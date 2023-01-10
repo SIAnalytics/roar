@@ -35,7 +35,8 @@ mim train mmcls cub/resnet50_8xb8_cub.py \
 ### Estimate a feature importance
 
 ```bash
-python tools/estimate.py
+mim test mmcls configs/estimation.py --checkpoint cub/resnet50_8xb8_cub_20220307-57840e60.pth \
+    --work-dir cub --gpus 1
 ```
 
 ### Retrain
