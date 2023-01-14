@@ -7,7 +7,6 @@ model = dict(
         num_classes=10,
         in_channels=512,
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0)))
-dataset_type = 'CustomDataset'
 data_preprocessor = dict(
     num_classes=10,
     mean=[125.307, 122.961, 113.8575],
