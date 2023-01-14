@@ -13,7 +13,7 @@ mim install mmcls==1.0.0rc5
 
 ### Data preparation
 
-You have to convert `CIFAR10` to `CustomDataset` for retraining
+You have to convert `CIFAR10` to `CustomDataset` for retraining.
 
 ```bash
 python tools/dataset_converters/cifar2custom.py -o data/cifar10
@@ -21,8 +21,10 @@ python tools/dataset_converters/cifar2custom.py -o data/cifar10
 
 ### Train
 
+```bash
 mim train mmcls configs/train/resnet18_8xb16_cifar10.py \
---work-dir cifar10 --gpus 1
+    --work-dir cifar10 --gpus 1
+```
 
 ### Estimate a feature importance
 
@@ -45,7 +47,7 @@ mim gridsearch mmcls configs/retrain/resnet18_8xb16_cifar10.py \
 
 ### Data preparation
 
-You have to convert `SVHN` to `CustomDataset` for retraining
+You have to convert `SVHN` to `CustomDataset` for retraining.
 
 ```bash
 python tools/dataset_converters/svhn2custom.py -o data/svhn
@@ -53,8 +55,10 @@ python tools/dataset_converters/svhn2custom.py -o data/svhn
 
 ### Train
 
+```bash
 mim train mmcls configs/train/resnet18_8xb16_svhn.py \
---work-dir svhn --gpus 1
+    --work-dir svhn --gpus 1
+```
 
 ### Estimate a feature importance
 
