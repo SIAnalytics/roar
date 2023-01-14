@@ -94,11 +94,11 @@ class SVHN(BaseDataset):
         imgs = np.transpose(mat['X'], (3, 0, 1, 2))  # convert HWCN to NHWC
         gt_labels = np.squeeze(mat['y'])  # convert N1 to N
 
-        data_infos = []
+        data_list = list()
         for img, gt_label in zip(imgs, gt_labels):
             info = dict(img=img, gt_label=gt_label)
-            data_infos.append(info)
-        return data_infos
+            data_list.append(info)
+        return data_list
 
     def _check_exists(self):
         """Check the exists of data files."""
