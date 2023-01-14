@@ -1,4 +1,3 @@
-import copy
 from abc import abstractmethod
 from functools import partial
 
@@ -88,7 +87,6 @@ class SmoothGrad(EnsembleGradients):
         self.sigma = sigma
 
     def _wrap_batch(self, _: int, data_batch: dict) -> dict:
-        data_batch = copy.deepcopy(data_batch)
         data_batch['inputs'] = data_batch['inputs'] + torch.normal(
             0,
             torch.ones_like(data_batch['inputs']) * self.sigma)
