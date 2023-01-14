@@ -1,0 +1,82 @@
+from scipy.io import matlab
+
+
+import mmengine.dist as dist
+import numpy as np
+from mmengine.fileio import LocalBackend, get_file_backend, join_path
+
+from mmcls.datasets import MNIST
+from mmcls.registry import DATASETS
+
+
+@DATASETS.register_module()
+class SVHN(MNIST):
+    """`SVHN <http://ufldl.stanford.edu/housenumbers>`_ Dataset.
+
+    Args:
+        data_prefix (str): Prefix for data.
+        test_mode (bool): ``test_mode=True`` means in test phase.
+            It determines to use the training set or test set.
+        metainfo (dict, optional): Meta information for dataset, such as
+            categories information. Defaults to None.
+        data_root (str): The root directory for ``data_prefix``.
+            Defaults to ''.
+        download (bool): Whether to download the dataset if not exists.
+            Defaults to True.
+        **kwargs: Other keyword arguments in :class:`BaseDataset`.
+    """  # noqa: E501
+
+    url_prefix = 'http://ufldl.stanford.edu/housenumbers/'
+    # train images and labels
+    train_list = [
+        ['train_32x32.mat', 'e26dedcc434d2e4c54c9b2d4a06d8373'],
+    ]
+    # test images and labels
+    test_list = [
+        ['test_32x32.mat', 'eb5a983be6a315427106f1b164d9cef3'],
+    ]
+    # extra images and labels, but it is not used
+    extra_list = [
+        ['extra_32x32.mat', 'a93ce644f1a588dc4d68dda5feec44a7']
+    ]
+
+    def load_data_list(self):
+        """Load images and ground truth labels."""
+        root = self.data_prefix['root']
+        backend = get_file_backend(root, enable_singleton=True)
+
+        if dist.is_main_process():
+            if not isinstance(backend, LocalBackend):
+                raise RuntimeError(f'The dataset on {root} is not integrated, '
+                                   f'please manually handle it.')
+
+            if self.download:
+                self._download()
+            else:
+                raise RuntimeError(
+                    f'Cannot find {self.__class__.__name__} dataset in '
+                    f"{self.data_prefix['root']}, you can specify "
+                    '`download=True` to download automatically.')
+
+        dist.barrier()
+        assert self._check_exists(), \
+            'Download failed or shared storage is unavailable. Please ' \
+            f'download the dataset manually through {self.url_prefix}.'
+
+        if not self.test_mode:
+            file_list = self.train_list
+        else:
+            file_list = self.test_list
+
+        # load data from mat file
+        mat = matlab.loadmat(join_path(root, file_list[0][0]))
+        imgs = mat['X'].transpose(3, 0, 1, 2)
+        gt_labels = mat['y']
+
+        data_infos = []
+        for img, gt_label in zip(imgs, gt_labels):
+            gt_label = np.array(gt_label, dtype=np.int8)
+            info = {'img': img.numpy(), 'gt_label': gt_label}
+            data_infos.append(info)
+        return data_infos
+
