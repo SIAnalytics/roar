@@ -1,9 +1,7 @@
-from scipy.io import matlab
-
-
 import mmengine.dist as dist
 import numpy as np
 from mmengine.fileio import LocalBackend, get_file_backend, join_path
+from scipy.io import matlab
 
 from mmcls.datasets import MNIST
 from mmcls.registry import DATASETS
@@ -36,9 +34,7 @@ class SVHN(MNIST):
         ['test_32x32.mat', 'eb5a983be6a315427106f1b164d9cef3'],
     ]
     # extra images and labels, but it is not used
-    extra_list = [
-        ['extra_32x32.mat', 'a93ce644f1a588dc4d68dda5feec44a7']
-    ]
+    extra_list = [['extra_32x32.mat', 'a93ce644f1a588dc4d68dda5feec44a7']]
 
     def load_data_list(self):
         """Load images and ground truth labels."""
@@ -79,4 +75,3 @@ class SVHN(MNIST):
             info = {'img': img.numpy(), 'gt_label': gt_label}
             data_infos.append(info)
         return data_infos
-
