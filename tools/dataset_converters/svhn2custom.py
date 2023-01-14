@@ -23,13 +23,15 @@ def main():
     for data in svhn:
         base_dir = osp.join(args.out_dir, 'train', str(data['gt_label']))
         mmcv.imwrite(data['img'],
-                     osp.join(base_dir, data['sample_idx'] + '.png'))
+                     osp.join(base_dir,
+                              str(data['sample_idx']) + '.png'))
 
     svhn = SVHN(tmpdir.name, test_mode=True)
     for data in svhn:
         base_dir = osp.join(args.out_dir, 'test', str(data['gt_label']))
         mmcv.imwrite(data['img'],
-                     osp.join(base_dir, data['sample_idx'] + '.png'))
+                     osp.join(base_dir,
+                              str(data['sample_idx']) + '.png'))
     tmpdir.cleanup()
 
 
