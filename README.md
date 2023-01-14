@@ -36,7 +36,7 @@ mim test mmcls configs/estimation/resnet18_8xb16_cifar10.py \
 
 ### Retrain
 
-```
+```bash
 mim gridsearch mmcls configs/retrain/resnet18_8xb16_cifar10.py \
     --work-dir cifar10 --gpus 1 \
     --cfg-options load_from=cifar10/latest.pth \
@@ -70,7 +70,7 @@ mim test mmcls configs/estimation/resnet18_8xb16_svhn.py \
 
 ### Retrain
 
-```
+```bash
 mim gridsearch mmcls configs/retrain/resnet18_8xb16_svhn.py \
     --work-dir svhn --gpus 1 \
     --cfg-options load_from=svhn/latest.pth \
@@ -100,13 +100,13 @@ mim train mmcls cub/resnet50_8xb8_cub.py \
 
 ```bash
 mim download mmcls --config resnet50_8xb8_cub --dest cub
-mim test mmcls configs/estimation.py --checkpoint cub/resnet50_8xb8_cub_20220307-57840e60.pth \
+mim test mmcls test/resnet50_8xb8_cub.py --checkpoint cub/resnet50_8xb8_cub_20220307-57840e60.pth \
     --work-dir cub --gpus 1
 ```
 
 ### Retrain
 
-```
+```bash
 mim gridsearch mmcls cub/resnet50_8xb8_cub.py \
     --work-dir cub --gpus 1 \
     --cfg-options load_from=cub/resnet50_8xb8_cub_20220307-57840e60.pth \

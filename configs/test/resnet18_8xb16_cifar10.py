@@ -1,17 +1,19 @@
-default_scope = 'mmcls'
 custom_imports = dict(
     imports=['roar.engine', 'roar.estimation'], allow_failed_imports=False)
 model = dict(
     type='ImageClassifier',
-    backbone=dict(type='ResNet', depth=50),
+    backbone=dict(type='ResNet_CIFAR', depth=18),
     neck=dict(type='GlobalAveragePooling'),
     head=dict(
         type='LinearClsHead',
-        num_classes=1000,
-        in_channels=2048,
-        loss=dict(type='CrossEntropyLoss')))
+        num_classes=10,
+        in_channels=512,
+        loss=dict(type='CrossEntropyLoss', loss_weight=1.0)))
 data_preprocessor = dict(
-    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+    num_classes=10,
+    mean=[125.307, 122.961, 113.8575],
+    std=[51.5865, 50.847, 51.255],
+    to_rgb=False)
 test_pipeline = [
     dict(type='LoadImageFromFile', to_float32=True),
     dict(type='PackClsInputs')
@@ -20,11 +22,11 @@ test_dataloader = dict(
     pin_memory=True,
     persistent_workers=True,
     collate_fn=dict(type='default_collate'),
-    batch_size=1,
-    num_workers=1,
+    batch_size=16,
+    num_workers=2,
     dataset=dict(
-        type='CUB',
-        data_root='data/CUB_200_2011',
+        type='CustomDataset',
+        data_root='data/cifar10/test',
         test_mode=True,
         pipeline=test_pipeline),
     sampler=dict(type='DefaultSampler', shuffle=False))
@@ -40,6 +42,7 @@ estimator = [
     dict(type='Sobl'),
     dict(type='Rand'),
 ]
+default_scope = 'mmcls'
 default_hooks = dict(
     timer=dict(type='IterTimerHook'),
     visualization=dict(type='FeatureEstimationHook', estimator=estimator))
