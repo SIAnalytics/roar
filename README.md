@@ -63,6 +63,13 @@ python tools/dataset_converters/svhn2custom.py -o data/svhn
 ### Train
 
 ```bash
+mim train mmcls configs/train/resnet18_8xb16_svhn.py \
+    --work-dir svhn --gpus 1
+```
+
+### Estimate a feature importance
+
+```bash
 # for train dataset
 mim test mmcls configs/test/resnet18_8xb16_svhn.py \
     --checkpoint svhn/latest.pth \
@@ -71,14 +78,6 @@ mim test mmcls configs/test/resnet18_8xb16_svhn.py \
 mim test mmcls configs/test/resnet18_8xb16_svhn.py \
     --checkpoint svhn/latest.pth \
     --work-dir svhn/test --gpus 1
-```
-
-### Estimate a feature importance
-
-```bash
-mim test mmcls configs/estimation/resnet18_8xb16_svhn.py \
-    --checkpoint svhn/latest.pth \
-    --work-dir svhn --gpus 1
 ```
 
 ### Retrain
