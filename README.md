@@ -129,3 +129,12 @@ mim gridsearch mmcls configs/retrain/resnet50_8xb8_cub.py \
         --train_dataloader.dataset.pipeline.1.ratio 10 30 50 70 90 \
         --train_dataloader.dataset.pipeline.1.filter none maximum gaussian'
 ```
+
+### ROAD
+
+```bash
+mim test mmcls configs/road/resnet50_8xb8_cub.py \
+    --checkpoint cub/resnet50_8xb8_cub_20220307-57840e60.pth \
+    --work-dir cifar10/test --gpus 1 \
+    --cfg-options attr=grad ratio=10 filter=none
+```

@@ -4,7 +4,7 @@ train_pipeline = [
     dict(type='LoadImageFromFile', to_float32=True),
     dict(
         type='RemOve',
-        mask_dir='cifar/train',
+        mask_dir='cifar10/train',
         attr='',  # placeholder for gridsearch
         ratio=0,  # placeholder for gridsearch
         filter='',  # placeholder for gridsearch
@@ -17,7 +17,7 @@ test_pipeline = [
     dict(type='LoadImageFromFile', to_float32=True),
     dict(
         type='RemOve',
-        mask_dir='cifar/test',
+        mask_dir='cifar10/test',
         mean=[125.307, 122.961, 113.8575]),
     dict(type='PackClsInputs')
 ]
