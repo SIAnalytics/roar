@@ -6,7 +6,7 @@ model = dict(
     neck=dict(type='GlobalAveragePooling'),
     head=dict(
         type='LinearClsHead',
-        num_classes=1000,
+        num_classes=200,
         in_channels=2048,
         loss=dict(type='CrossEntropyLoss')))
 data_preprocessor = dict(
