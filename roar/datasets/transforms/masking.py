@@ -27,6 +27,7 @@ class RemOve(BaseTransform):
         filter (str, optional): 'none', 'maximum', or 'gaussian'
         maximum_kwargs (dict): kwargs for maximum filter.
         gaussian_kwargs (dict): kwargs for gaussian filter.
+        apply_mask (bool):
     """
     attr = None
     ratio = None
@@ -41,6 +42,7 @@ class RemOve(BaseTransform):
             filter: Optional[str] = None,  # max or gaussian
             maximum_kwargs: dict = dict(size=3),
             gaussian_kwargs: dict = dict(sigma=1.0),
+            apply_mask=True,
     ):
         self.mask_dir = mask_dir
         self.mean = np.array(mean or [0] * 3)
@@ -52,6 +54,7 @@ class RemOve(BaseTransform):
             self.filter = filter
         self.maximum_kwargs = maximum_kwargs
         self.gaussian_kwargs = gaussian_kwargs
+        self.apply_mask = apply_mask
 
     def _apply_filter(self, mask):
         assert self.filter in ('none', 'maximum', 'gaussian')
@@ -70,7 +73,8 @@ class RemOve(BaseTransform):
         mask = self._apply_filter(mask)
         mask = mask >= np.percentile(mask, 100 - self.ratio)
 
-        results['img'] = results['img'] * (1 - mask) + mask * self.mean
+        if self.apply_mask:
+            results['img'] = results['img'] * (1 - mask) + mask * self.mean
         results['mask'] = mask
         results['mask_path'] = mask_path
 
