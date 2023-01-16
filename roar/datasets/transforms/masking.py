@@ -28,21 +28,24 @@ class RemOve(BaseTransform):
         maximum_kwargs (dict): kwargs for maximum filter.
         gaussian_kwargs (dict): kwargs for gaussian filter.
     """
+    attr = None
     ratio = None
     filter = None
 
     def __init__(
             self,
             mask_dir: str,
-            attr: str,
+            attr: Optional[str] = None,
             mean: Optional[list] = None,
             ratio: Optional[int] = None,
             filter: Optional[str] = None,  # max or gaussian
             maximum_kwargs: dict = dict(size=3),
             gaussian_kwargs: dict = dict(sigma=1.0),
     ):
-        self.mask_dir = osp.join(mask_dir, attr)
+        self.mask_dir = mask_dir
         self.mean = np.array(mean or [0] * 3)
+        if attr is not None:
+            self.attr = attr
         if ratio is not None:
             self.ratio = ratio
         if filter is not None:
@@ -50,14 +53,21 @@ class RemOve(BaseTransform):
         self.maximum_kwargs = maximum_kwargs
         self.gaussian_kwargs = gaussian_kwargs
 
-    def transform(self, results: dict) -> dict:
-        filename, _ = osp.splitext(osp.basename(results['img_path']))
-        mask_path = osp.join(self.mask_dir, f'{filename}.npy')
-        mask = np.expand_dims(np.load(mask_path).mean(axis=0), axis=-1)
+    def _apply_filter(self, mask):
+        assert self.filter in ('none', 'maximum', 'gaussian')
+
         if self.filter == 'maximum':
             mask = ndimage.maximum_filter(mask, **self.maximum_kwargs)
         elif self.filter == 'gaussian':
             mask = ndimage.gaussian_filter(mask, **self.gaussian_kwargs)
+        return mask
+
+    def transform(self, results: dict) -> dict:
+        mask_path = osp.join(
+            self.mask_dir, self.attr,
+            osp.splitext(osp.basename(results['img_path']))[0] + '.npy')
+        mask = np.expand_dims(np.load(mask_path).mean(axis=0), axis=-1)
+        mask = self._apply_filter(mask)
         mask = mask >= np.percentile(mask, 100 - self.ratio)
 
         results['img'] = results['img'] * (1 - mask) + mask * self.mean
