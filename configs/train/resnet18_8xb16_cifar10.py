@@ -23,8 +23,8 @@ test_pipeline = [
     dict(type='PackClsInputs')
 ]
 train_dataloader = dict(
-    batch_size=16,
-    num_workers=2,
+    batch_size=32,
+    num_workers=8,
     dataset=dict(
         type='CustomDataset',
         data_prefix='data/cifar10/train',
@@ -32,8 +32,8 @@ train_dataloader = dict(
         pipeline=train_pipeline),
     sampler=dict(type='DefaultSampler', shuffle=True))
 val_dataloader = dict(
-    batch_size=16,
-    num_workers=2,
+    batch_size=32,
+    num_workers=8,
     dataset=dict(
         type='CustomDataset',
         data_prefix='data/cifar10/test',
@@ -42,8 +42,8 @@ val_dataloader = dict(
     sampler=dict(type='DefaultSampler', shuffle=False))
 val_evaluator = dict(type='Accuracy', topk=(1, ))
 test_dataloader = dict(
-    batch_size=16,
-    num_workers=2,
+    batch_size=32,
+    num_workers=8,
     dataset=dict(
         type='CustomDataset',
         data_prefix='data/cifar10/test',
@@ -54,8 +54,8 @@ test_evaluator = dict(type='Accuracy', topk=(1, ))
 optim_wrapper = dict(
     optimizer=dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0001))
 param_scheduler = dict(
-    type='MultiStepLR', by_epoch=True, milestones=[100, 150], gamma=0.1)
-train_cfg = dict(by_epoch=True, max_epochs=200, val_interval=100)
+    type='MultiStepLR', by_epoch=True, milestones=[50, 75], gamma=0.1)
+train_cfg = dict(by_epoch=True, max_epochs=100, val_interval=100)
 val_cfg = dict()
 test_cfg = dict()
 auto_scale_lr = dict(base_batch_size=128)
