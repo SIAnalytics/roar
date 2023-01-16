@@ -110,7 +110,7 @@ mim test mmcls test/resnet50_8xb8_cub.py --checkpoint cub/resnet50_8xb8_cub_2022
 mim gridsearch mmcls configs/retrain/resnet50_8xb8_cub.py \
     --work-dir cub --gpus 1 \
     --cfg-options load_from=cub/resnet50_8xb8_cub_20220307-57840e60.pth \
-    --search-args '--train_dataloader.dataset.pipeline.1.attr grad gi ig sg vg gc sobl rand
-        --train_dataloader.dataset.pipeline.1.ratio 10 30 50 70 90
+    --search-args '--train_dataloader.dataset.pipeline.1.attr grad gi ig sg vg gc sobl rand \
+        --train_dataloader.dataset.pipeline.1.ratio 10 30 50 70 90 \ 
         --train_dataloader.dataset.pipeline.1.filter none maximum gaussian'
 ```
