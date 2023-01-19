@@ -133,8 +133,10 @@ mim gridsearch mmcls configs/retrain/resnet50_8xb8_cub.py \
 ### ROAD
 
 ```bash
-mim test mmcls configs/road/resnet50_8xb8_cub.py \
+mim test mmcls configs/debias/resnet50_8xb8_cub.py \
     --checkpoint cub/resnet50_8xb8_cub_20220307-57840e60.pth \
-    --work-dir cifar10/test --gpus 1 \
-    --cfg-options attr=grad ratio=10 filter=none
+    --work-dir cub --gpus 1 \
+    --cfg-options test_dataloader.dataset.pipeline.1.attr=grad \
+        test_dataloader.dataset.pipeline.1.ratio=10 \
+        test_dataloader.dataset.pipeline.1.filter=none
 ```

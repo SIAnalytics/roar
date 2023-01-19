@@ -1,6 +1,5 @@
 import numpy as np
 from mmcv.transforms import BaseTransform
-from mmcv.transforms.utils import cache_randomness
 from scipy.sparse import csc_matrix, lil_matrix
 from scipy.sparse.linalg import spsolve
 
@@ -98,7 +97,6 @@ class LinearImputation(BaseTransform):
         A[np.arange(num_equations), np.arange(num_equations)] = -sum_neighbors
         return A, b
 
-    @cache_randomness
     def transform(self, results):
         img = results['img'].transpose(2, 0, 1)
         mask = 1 - results['mask']
