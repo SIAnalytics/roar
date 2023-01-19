@@ -5,7 +5,7 @@
 You have to install MMClassification with MIM.
 
 ```bash
-pip install mim
+pip install openmim
 mim install mmcls==1.0.0rc5
 ```
 
