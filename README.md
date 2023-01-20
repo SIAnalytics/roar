@@ -129,3 +129,14 @@ mim gridsearch mmcls configs/retrain/resnet50_8xb8_cub.py \
         --train_dataloader.dataset.pipeline.1.ratio 10 30 50 70 90 \
         --train_dataloader.dataset.pipeline.1.filter none maximum gaussian'
 ```
+
+### ROAD
+
+```bash
+mim test mmcls configs/debias/resnet50_8xb8_cub.py \
+    --checkpoint cub/resnet50_8xb8_cub_20220307-57840e60.pth \
+    --work-dir cub --gpus 1 \
+    --cfg-options test_dataloader.dataset.pipeline.1.attr=grad \
+        test_dataloader.dataset.pipeline.1.ratio=10 \
+        test_dataloader.dataset.pipeline.1.filter=none
+```

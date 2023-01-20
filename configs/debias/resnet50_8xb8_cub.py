@@ -1,5 +1,5 @@
 custom_imports = dict(
-    imports=['roar.engine', 'roar.estimation'], allow_failed_imports=False)
+    imports=['roar.datasets.transforms'], allow_failed_imports=False)
 model = dict(
     type='ImageClassifier',
     backbone=dict(type='ResNet', depth=50),
@@ -13,14 +13,25 @@ data_preprocessor = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 test_pipeline = [
     dict(type='LoadImageFromFile', to_float32=True),
+    dict(
+        type='RemOve',
+        mask_dir='cub',
+        attr='',  # placeholder for gridsearch
+        ratio=0,  # placeholder for gridsearch
+        filter='',  # placeholder for gridsearch
+        mean=[103.53, 116.28, 123.675],
+        apply_mask=False),
+    dict(type='LinearImputation'),
+    dict(type='Resize', scale=600),
+    dict(type='CenterCrop', crop_size=448),
     dict(type='PackClsInputs')
 ]
 test_dataloader = dict(
     pin_memory=True,
     persistent_workers=True,
     collate_fn=dict(type='default_collate'),
-    batch_size=1,
-    num_workers=1,
+    batch_size=16,
+    num_workers=8,
     dataset=dict(
         type='CUB',
         data_root='data/CUB_200_2011',
@@ -29,20 +40,8 @@ test_dataloader = dict(
     sampler=dict(type='DefaultSampler', shuffle=False))
 test_evaluator = dict(type='Accuracy', topk=(1, ))
 test_cfg = dict()
-estimator = [
-    dict(type='Grad'),
-    dict(type='GI'),
-    dict(type='IG'),
-    dict(type='SG'),
-    dict(type='VG'),
-    dict(type='GC', module='backbone.layer4'),
-    dict(type='Sobl'),
-    dict(type='Rand'),
-]
 default_scope = 'mmcls'
-default_hooks = dict(
-    timer=dict(type='IterTimerHook'),
-    visualization=dict(type='FeatureEstimationHook', estimator=estimator))
+default_hooks = dict(timer=dict(type='IterTimerHook'))
 env_cfg = dict(
     cudnn_benchmark=False,
     mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0),
