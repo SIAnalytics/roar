@@ -31,11 +31,11 @@ mim train mmcls configs/train/resnet18_8xb16_cifar10.py \
 ```bash
 # for train dataset
 mim test mmcls configs/test/resnet18_8xb16_cifar10.py \
-    --checkpoint cifar10/latest.pth \
+    --checkpoint cifar10/epoch_100.pth \
     --work-dir cifar10/train --gpus 1 --cfg-options test_dataloader.dataset.test_mode=False
 # for test dataset
 mim test mmcls configs/test/resnet18_8xb16_cifar10.py \
-    --checkpoint cifar10/latest.pth \
+    --checkpoint cifar10/epoch_100.pth \
     --work-dir cifar10/test --gpus 1
 ```
 
@@ -44,10 +44,21 @@ mim test mmcls configs/test/resnet18_8xb16_cifar10.py \
 ```bash
 mim gridsearch mmcls configs/retrain/resnet18_8xb16_cifar10.py \
     --work-dir cifar10 --gpus 1 \
-    --cfg-options load_from=cifar10/latest.pth \
-    --search-args '--train_dataloader.dataset.pipeline.1.attr grad gi ig sg vg gc sobl rand \
-        --train_dataloader.dataset.pipeline.1.ratio 10 30 50 70 90 \
+    --cfg-options load_from=cifar10/epoch_100.pth \
+    --search-args '--train_dataloader.dataset.pipeline.1.attr grad gi ig sg vg gc sobl rand
+        --train_dataloader.dataset.pipeline.1.ratio 10 30 50 70 90
         --train_dataloader.dataset.pipeline.1.filter none maximum gaussian'
+```
+
+### ROAD
+
+```bash
+mim test mmcls configs/debias/resnet18_8xb16_cifar10.py \
+    --checkpoint cifar10/epoch_100.pth \
+    --work-dir cifar10 --gpus 1 \
+    --cfg-options test_dataloader.dataset.pipeline.1.attr=grad \
+        test_dataloader.dataset.pipeline.1.ratio=10 \
+        test_dataloader.dataset.pipeline.1.filter=none
 ```
 
 ## SVHN
@@ -72,11 +83,11 @@ mim train mmcls configs/train/resnet18_8xb16_svhn.py \
 ```bash
 # for train dataset
 mim test mmcls configs/test/resnet18_8xb16_svhn.py \
-    --checkpoint svhn/latest.pth \
+    --checkpoint svhn/epoch_100.pth \
     --work-dir svhn/train --gpus 1 --cfg-options test_dataloader.dataset.test_mode=False
 # for test dataset
 mim test mmcls configs/test/resnet18_8xb16_svhn.py \
-    --checkpoint svhn/latest.pth \
+    --checkpoint svhn/epoch_100.pth \
     --work-dir svhn/test --gpus 1
 ```
 
@@ -85,10 +96,21 @@ mim test mmcls configs/test/resnet18_8xb16_svhn.py \
 ```bash
 mim gridsearch mmcls configs/retrain/resnet18_8xb16_svhn.py \
     --work-dir svhn --gpus 1 \
-    --cfg-options load_from=svhn/latest.pth \
-    --search-args '--train_dataloader.dataset.pipeline.1.attr grad gi ig sg vg gc sobl rand \
-        --train_dataloader.dataset.pipeline.1.ratio 10 30 50 70 90 \
+    --cfg-options load_from=svhn/epoch_100.pth \
+    --search-args '--train_dataloader.dataset.pipeline.1.attr grad gi ig sg vg gc sobl rand
+        --train_dataloader.dataset.pipeline.1.ratio 10 30 50 70 90
         --train_dataloader.dataset.pipeline.1.filter none maximum gaussian'
+```
+
+### ROAD
+
+```bash
+mim test mmcls configs/debias/resnet18_8xb16_svhn.py \
+    --checkpoint svhn/epoch_100.pth \
+    --work-dir svhn --gpus 1 \
+    --cfg-options test_dataloader.dataset.pipeline.1.attr=grad \
+        test_dataloader.dataset.pipeline.1.ratio=10 \
+        test_dataloader.dataset.pipeline.1.filter=none
 ```
 
 ## CUB-200
@@ -125,8 +147,8 @@ mim test mmcls test/resnet50_8xb8_cub.py \
 mim gridsearch mmcls configs/retrain/resnet50_8xb8_cub.py \
     --work-dir cub --gpus 1 \
     --cfg-options load_from=cub/resnet50_8xb8_cub_20220307-57840e60.pth \
-    --search-args '--train_dataloader.dataset.pipeline.1.attr grad gi ig sg vg gc sobl rand \
-        --train_dataloader.dataset.pipeline.1.ratio 10 30 50 70 90 \
+    --search-args '--train_dataloader.dataset.pipeline.1.attr grad gi ig sg vg gc sobl rand
+        --train_dataloader.dataset.pipeline.1.ratio 10 30 50 70 90
         --train_dataloader.dataset.pipeline.1.filter none maximum gaussian'
 ```
 
