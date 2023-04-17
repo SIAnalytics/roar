@@ -8,7 +8,7 @@ from mmengine.runner import Runner
 from mmengine.visualization import Visualizer
 
 from mmpretrain.registry import HOOKS
-from mmpretrain.structures import ClsDataSample
+from mmpretrain.structures import DataSample
 from roar.estimation import BaseAttribute
 from roar.registry import ATTRIBUTES
 
@@ -40,7 +40,7 @@ class FeatureEstimationHook(Hook):
                 cfg, default_args=dict(model=model))
 
     def after_test_iter(self, runner: Runner, batch_idx: int, data_batch: dict,
-                        outputs: Sequence[ClsDataSample]):
+                        outputs: Sequence[DataSample]):
         for estimator in self._estimators:
             self._estimate_features(estimator, data_batch)
 

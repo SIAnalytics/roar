@@ -24,7 +24,7 @@ test_pipeline = [
     dict(type='LinearImputation'),
     dict(type='Resize', scale=600),
     dict(type='CenterCrop', crop_size=448),
-    dict(type='PackClsInputs')
+    dict(type='PackInputs')
 ]
 test_dataloader = dict(
     pin_memory=True,
@@ -47,6 +47,6 @@ env_cfg = dict(
     mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0),
     dist_cfg=dict(backend='nccl'))
 vis_backends = [dict(type='LocalVisBackend')]
-visualizer = dict(type='ClsVisualizer', vis_backends=vis_backends)
+visualizer = dict(type='UniversalVisualizer', vis_backends=vis_backends)
 log_level = 'INFO'
 load_from = None
