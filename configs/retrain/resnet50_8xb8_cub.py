@@ -1,8 +1,8 @@
-_base_ = 'mmcls::resnet/resnet50_8xb8_cub.py'
+_base_ = 'mmpretrain::resnet/resnet50_8xb8_cub.py'
 
 custom_imports = dict(
     imports=['roar.datasets.transforms'], allow_failed_imports=False)
-default_scope = 'mmcls'
+default_scope = 'mmpretrain'
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(

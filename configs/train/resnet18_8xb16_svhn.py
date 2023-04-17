@@ -59,7 +59,7 @@ train_cfg = dict(by_epoch=True, max_epochs=100, val_interval=100)
 val_cfg = dict()
 test_cfg = dict()
 auto_scale_lr = dict(base_batch_size=128)
-default_scope = 'mmcls'
+default_scope = 'mmpretrain'
 default_hooks = dict(
     timer=dict(type='IterTimerHook'),
     logger=dict(type='LoggerHook', interval=100),

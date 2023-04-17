@@ -7,8 +7,8 @@ from mmengine.model import is_model_wrapper
 from mmengine.runner import Runner
 from mmengine.visualization import Visualizer
 
-from mmcls.registry import HOOKS
-from mmcls.structures import ClsDataSample
+from mmpretrain.registry import HOOKS
+from mmpretrain.structures import ClsDataSample
 from roar.estimation import BaseAttribute
 from roar.registry import ATTRIBUTES
 

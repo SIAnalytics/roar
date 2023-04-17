@@ -6,10 +6,10 @@ import numpy as np
 from mmengine.fileio import LocalBackend, exists, get_file_backend, join_path
 from scipy.io import matlab
 
-from mmcls.datasets import BaseDataset
-from mmcls.datasets.categories import MNIST_CATEGORITES
-from mmcls.datasets.utils import download_url
-from mmcls.registry import DATASETS
+from mmpretrain.datasets import BaseDataset
+from mmpretrain.datasets.categories import MNIST_CATEGORITES
+from mmpretrain.datasets.utils import download_url
+from mmpretrain.registry import DATASETS
 
 
 @DATASETS.register_module()

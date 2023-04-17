@@ -42,7 +42,7 @@ estimator = [
     dict(type='Sobl'),
     dict(type='Rand'),
 ]
-default_scope = 'mmcls'
+default_scope = 'mmpretrain'
 default_hooks = dict(
     timer=dict(type='IterTimerHook'),
     visualization=dict(type='FeatureEstimationHook', estimator=estimator))

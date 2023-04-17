@@ -40,7 +40,7 @@ test_dataloader = dict(
     sampler=dict(type='DefaultSampler', shuffle=False))
 test_evaluator = dict(type='Accuracy', topk=(1, ))
 test_cfg = dict()
-default_scope = 'mmcls'
+default_scope = 'mmpretrain'
 default_hooks = dict(timer=dict(type='IterTimerHook'))
 env_cfg = dict(
     cudnn_benchmark=False,
