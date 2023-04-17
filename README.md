@@ -5,8 +5,8 @@
 You have to install MMPretrain with MIM.
 
 ```bash
-pip install openmim
-mim install mmpretrain==1.0.0rc5
+pip install openmim==0.3.7
+mim install mmpretrain==1.0.0rc7
 ```
 
 ## CIFAR 10
