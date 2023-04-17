@@ -7,6 +7,7 @@ You have to install MMPretrain with MIM.
 ```bash
 pip install openmim==0.3.7
 mim install mmpretrain==1.0.0rc7
+pip install -e .
 ```
 
 ## CIFAR 10
