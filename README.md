@@ -2,11 +2,12 @@
 
 ## Installation
 
-You have to install MMClassification with MIM.
+You have to install MMPretrain with MIM.
 
 ```bash
-pip install openmim
-mim install mmcls==1.0.0rc5
+pip install openmim==0.3.7
+mim install mmpretrain==1.0.0rc7
+pip install -e .
 ```
 
 ## CIFAR 10
@@ -22,7 +23,7 @@ python tools/dataset_converters/cifar2custom.py -o data/cifar10
 ### Train
 
 ```bash
-mim train mmcls configs/train/resnet18_8xb16_cifar10.py \
+mim train mmpretrain configs/train/resnet18_8xb16_cifar10.py \
     --work-dir cifar10 --gpus 1
 ```
 
@@ -30,11 +31,11 @@ mim train mmcls configs/train/resnet18_8xb16_cifar10.py \
 
 ```bash
 # for train dataset
-mim test mmcls configs/test/resnet18_8xb16_cifar10.py \
+mim test mmpretrain configs/test/resnet18_8xb16_cifar10.py \
     --checkpoint cifar10/epoch_100.pth \
     --work-dir cifar10/train --gpus 1 --cfg-options test_dataloader.dataset.test_mode=False
 # for test dataset
-mim test mmcls configs/test/resnet18_8xb16_cifar10.py \
+mim test mmpretrain configs/test/resnet18_8xb16_cifar10.py \
     --checkpoint cifar10/epoch_100.pth \
     --work-dir cifar10/test --gpus 1
 ```
@@ -42,7 +43,7 @@ mim test mmcls configs/test/resnet18_8xb16_cifar10.py \
 ### Retrain
 
 ```bash
-mim gridsearch mmcls configs/retrain/resnet18_8xb16_cifar10.py \
+mim gridsearch mmpretrain configs/retrain/resnet18_8xb16_cifar10.py \
     --work-dir cifar10 --gpus 1 \
     --cfg-options load_from=cifar10/epoch_100.pth \
     --search-args '--train_dataloader.dataset.pipeline.1.attr grad gi ig sg vg gc sobl rand
@@ -53,7 +54,7 @@ mim gridsearch mmcls configs/retrain/resnet18_8xb16_cifar10.py \
 ### ROAD
 
 ```bash
-mim test mmcls configs/debias/resnet18_8xb16_cifar10.py \
+mim test mmpretrain configs/debias/resnet18_8xb16_cifar10.py \
     --checkpoint cifar10/epoch_100.pth \
     --work-dir cifar10 --gpus 1 \
     --cfg-options test_dataloader.dataset.pipeline.1.attr=grad \
@@ -74,7 +75,7 @@ python tools/dataset_converters/svhn2custom.py -o data/svhn
 ### Train
 
 ```bash
-mim train mmcls configs/train/resnet18_8xb16_svhn.py \
+mim train mmpretrain configs/train/resnet18_8xb16_svhn.py \
     --work-dir svhn --gpus 1
 ```
 
@@ -82,11 +83,11 @@ mim train mmcls configs/train/resnet18_8xb16_svhn.py \
 
 ```bash
 # for train dataset
-mim test mmcls configs/test/resnet18_8xb16_svhn.py \
+mim test mmpretrain configs/test/resnet18_8xb16_svhn.py \
     --checkpoint svhn/epoch_100.pth \
     --work-dir svhn/train --gpus 1 --cfg-options test_dataloader.dataset.test_mode=False
 # for test dataset
-mim test mmcls configs/test/resnet18_8xb16_svhn.py \
+mim test mmpretrain configs/test/resnet18_8xb16_svhn.py \
     --checkpoint svhn/epoch_100.pth \
     --work-dir svhn/test --gpus 1
 ```
@@ -94,7 +95,7 @@ mim test mmcls configs/test/resnet18_8xb16_svhn.py \
 ### Retrain
 
 ```bash
-mim gridsearch mmcls configs/retrain/resnet18_8xb16_svhn.py \
+mim gridsearch mmpretrain configs/retrain/resnet18_8xb16_svhn.py \
     --work-dir svhn --gpus 1 \
     --cfg-options load_from=svhn/epoch_100.pth \
     --search-args '--train_dataloader.dataset.pipeline.1.attr grad gi ig sg vg gc sobl rand
@@ -105,7 +106,7 @@ mim gridsearch mmcls configs/retrain/resnet18_8xb16_svhn.py \
 ### ROAD
 
 ```bash
-mim test mmcls configs/debias/resnet18_8xb16_svhn.py \
+mim test mmpretrain configs/debias/resnet18_8xb16_svhn.py \
     --checkpoint svhn/epoch_100.pth \
     --work-dir svhn --gpus 1 \
     --cfg-options test_dataloader.dataset.pipeline.1.attr=grad \
@@ -127,16 +128,16 @@ ln -s CUB_200_2011 data
 ### Train (optional)
 
 ```bash
-mim download mmcls --config resnet50_8xb8_cub --dest cub
-mim train mmcls cub/resnet50_8xb8_cub.py \
+mim download mmpretrain --config resnet50_8xb8_cub --dest cub
+mim train mmpretrain cub/resnet50_8xb8_cub.py \
     --work-dir cub --gpus 1
 ```
 
 ### Estimate a feature importance
 
 ```bash
-mim download mmcls --config resnet50_8xb8_cub --dest cub
-mim test mmcls test/resnet50_8xb8_cub.py \
+mim download mmpretrain --config resnet50_8xb8_cub --dest cub
+mim test mmpretrain test/resnet50_8xb8_cub.py \
     --checkpoint cub/resnet50_8xb8_cub_20220307-57840e60.pth \
     --work-dir cub --gpus 1
 ```
@@ -144,7 +145,7 @@ mim test mmcls test/resnet50_8xb8_cub.py \
 ### Retrain
 
 ```bash
-mim gridsearch mmcls configs/retrain/resnet50_8xb8_cub.py \
+mim gridsearch mmpretrain configs/retrain/resnet50_8xb8_cub.py \
     --work-dir cub --gpus 1 \
     --cfg-options load_from=cub/resnet50_8xb8_cub_20220307-57840e60.pth \
     --search-args '--train_dataloader.dataset.pipeline.1.attr grad gi ig sg vg gc sobl rand
@@ -155,7 +156,7 @@ mim gridsearch mmcls configs/retrain/resnet50_8xb8_cub.py \
 ### ROAD
 
 ```bash
-mim test mmcls configs/debias/resnet50_8xb8_cub.py \
+mim test mmpretrain configs/debias/resnet50_8xb8_cub.py \
     --checkpoint cub/resnet50_8xb8_cub_20220307-57840e60.pth \
     --work-dir cub --gpus 1 \
     --cfg-options test_dataloader.dataset.pipeline.1.attr=grad \

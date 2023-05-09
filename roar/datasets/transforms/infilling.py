@@ -3,7 +3,7 @@ from mmcv.transforms import BaseTransform
 from scipy.sparse import csc_matrix, lil_matrix
 from scipy.sparse.linalg import spsolve
 
-from mmcls.registry import TRANSFORMS
+from mmpretrain.registry import TRANSFORMS
 
 
 @TRANSFORMS.register_module()

@@ -16,11 +16,11 @@ train_pipeline = [
     dict(type='LoadImageFromFile', to_float32=True),
     dict(type='RandomCrop', crop_size=32, padding=4),
     dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='PackClsInputs')
+    dict(type='PackInputs')
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile', to_float32=True),
-    dict(type='PackClsInputs')
+    dict(type='PackInputs')
 ]
 train_dataloader = dict(
     batch_size=32,
@@ -48,7 +48,7 @@ test_dataloader = dict(
         type='CustomDataset',
         data_prefix='data/svhn/test',
         test_mode=True,
-        pipeline=[dict(type='PackClsInputs')]),
+        pipeline=[dict(type='PackInputs')]),
     sampler=dict(type='DefaultSampler', shuffle=False))
 test_evaluator = dict(type='Accuracy', topk=(1, ))
 optim_wrapper = dict(
@@ -59,7 +59,7 @@ train_cfg = dict(by_epoch=True, max_epochs=100, val_interval=100)
 val_cfg = dict()
 test_cfg = dict()
 auto_scale_lr = dict(base_batch_size=128)
-default_scope = 'mmcls'
+default_scope = 'mmpretrain'
 default_hooks = dict(
     timer=dict(type='IterTimerHook'),
     logger=dict(type='LoggerHook', interval=100),
@@ -73,7 +73,7 @@ env_cfg = dict(
     dist_cfg=dict(backend='nccl'))
 vis_backends = [dict(type='LocalVisBackend')]
 visualizer = dict(
-    type='ClsVisualizer', vis_backends=[dict(type='LocalVisBackend')])
+    type='UniversalVisualizer', vis_backends=[dict(type='LocalVisBackend')])
 log_level = 'INFO'
 load_from = None
 resume = False

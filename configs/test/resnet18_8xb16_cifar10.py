@@ -16,7 +16,7 @@ data_preprocessor = dict(
     to_rgb=False)
 test_pipeline = [
     dict(type='LoadImageFromFile', to_float32=True),
-    dict(type='PackClsInputs')
+    dict(type='PackInputs')
 ]
 test_dataloader = dict(
     pin_memory=True,
@@ -42,7 +42,7 @@ estimator = [
     dict(type='Sobl'),
     dict(type='Rand'),
 ]
-default_scope = 'mmcls'
+default_scope = 'mmpretrain'
 default_hooks = dict(
     timer=dict(type='IterTimerHook'),
     visualization=dict(type='FeatureEstimationHook', estimator=estimator))
@@ -51,6 +51,6 @@ env_cfg = dict(
     mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0),
     dist_cfg=dict(backend='nccl'))
 vis_backends = [dict(type='LocalVisBackend')]
-visualizer = dict(type='ClsVisualizer', vis_backends=vis_backends)
+visualizer = dict(type='UniversalVisualizer', vis_backends=vis_backends)
 log_level = 'INFO'
 load_from = None

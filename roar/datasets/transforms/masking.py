@@ -5,7 +5,7 @@ import numpy as np
 import scipy.ndimage as ndimage
 from mmcv.transforms import BaseTransform
 
-from mmcls.registry import TRANSFORMS
+from mmpretrain.registry import TRANSFORMS
 
 
 @TRANSFORMS.register_module()

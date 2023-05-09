@@ -4,7 +4,7 @@ from tempfile import TemporaryDirectory
 
 import mmcv
 
-from mmcls.datasets import CIFAR10
+from mmpretrain.datasets import CIFAR10
 
 
 def parse_args():

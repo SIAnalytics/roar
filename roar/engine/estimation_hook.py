@@ -7,8 +7,8 @@ from mmengine.model import is_model_wrapper
 from mmengine.runner import Runner
 from mmengine.visualization import Visualizer
 
-from mmcls.registry import HOOKS
-from mmcls.structures import ClsDataSample
+from mmpretrain.registry import HOOKS
+from mmpretrain.structures import DataSample
 from roar.estimation import BaseAttribute
 from roar.registry import ATTRIBUTES
 
@@ -40,7 +40,7 @@ class FeatureEstimationHook(Hook):
                 cfg, default_args=dict(model=model))
 
     def after_test_iter(self, runner: Runner, batch_idx: int, data_batch: dict,
-                        outputs: Sequence[ClsDataSample]):
+                        outputs: Sequence[DataSample]):
         for estimator in self._estimators:
             self._estimate_features(estimator, data_batch)
 
@@ -49,12 +49,13 @@ class FeatureEstimationHook(Hook):
         for i, data_sample in enumerate(data_batch['data_samples']):
             name = osp.basename(data_sample.get('img_path'))
             out_file = osp.join(self.out_dir, estimator.name, name)
-            self._visualizer.add_datasample(
-                f'{estimator.name}/{name}',
+            self._visualizer.visualize_cls(
                 self._visualizer.draw_featmap(attr[i]),
+                data_sample,
                 draw_gt=False,
                 draw_pred=False,
                 draw_score=False,
-                out_file=out_file)
+                out_file=out_file,
+                name=f'{estimator.name}/{name}')
             _, ext = osp.splitext(name)
             np.save(out_file.replace(ext, '.npy'), attr[i].cpu().numpy())
